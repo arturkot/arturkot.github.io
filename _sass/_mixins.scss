@@ -1,0 +1,10 @@
+@mixin will-fall {
+  visibility: hidden;
+  transform: translateY(-100vh);
+  transition: transform .85s cubic-bezier(1,-0.17,.69,1.21);
+
+  &.has-fallen {
+    visibility: visible;
+    transform: translateY(0);
+  }
+}

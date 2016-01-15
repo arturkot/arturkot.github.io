@@ -1,0 +1,14 @@
+---
+---
+
+@import "variables";
+@import "mixins";
+
+@media screen and (min-width: 768px) {
+  @import "modern/main-container";
+  @import "modern/axes-container";
+  @import "modern/box-list";
+  @import "modern/box";
+  @import "modern/square-cat";
+  @import "modern/main-logo";
+}

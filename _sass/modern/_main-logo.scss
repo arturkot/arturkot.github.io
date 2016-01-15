@@ -1,0 +1,10 @@
+.main-logo {
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  right: 50%;
+  margin-right: -80px;
+  @include will-fall;
+}

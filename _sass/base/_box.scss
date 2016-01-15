@@ -1,0 +1,14 @@
+.box {
+  display: block;
+  padding: 1em;
+  text-decoration: none;
+  color: $cLight;
+
+  &:hover {
+    background: darken($cBlue, 10%)
+  }
+
+  &:active {
+    background: $cPink;
+  }
+}

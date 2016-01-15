@@ -1,0 +1,22 @@
+.axes-container {
+  display: none;
+
+  .no-js & {
+    display: block
+  }
+}
+
+.axes-container__x,
+.axes-container__y {
+  max-width: 320px;
+  margin: 0 auto;
+  height: 1em;
+}
+
+.axes-container__x {
+  background: $cPink;
+}
+
+.axes-container__y {
+  background: lighten($cBlue, 10%);
+}

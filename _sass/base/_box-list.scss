@@ -1,0 +1,18 @@
+.box-list__item {
+  text-align: center;
+  font-family: 'Futura', Arial, sans-serif;
+  background: $cBlue;
+
+  & + & {
+    border-top: 1px solid lighten($cBlue, 10%)
+  }
+}
+
+.box__title {
+  font-size: 1.5em;
+  margin-bottom: .5em;
+}
+
+.box__desc {
+  font-size: 1em;
+}

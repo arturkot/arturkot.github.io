@@ -1,0 +1,25 @@
+.square-cat {
+  width: 230px;
+  height: 422px;
+  display: block;
+  margin: 0 auto 50px;
+  background: url(../images/square-cat.png);
+  @include will-fall;
+
+  @media #{$mqRetina} {
+    background: url(../images/square-cat@x2.png);
+    background-size: 230px 422px;
+  }
+
+  canvas {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  &.threeActive {
+    width: 422px;
+    height: 488px;
+    margin-top: -60px;
+    background: none;
+  }
+}

@@ -1,0 +1,16 @@
+.box-list {
+  text-align: center;
+  font-size: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.box-list__item {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  margin-bottom: $box-size;
+  background: none;
+  border: 0 none;
+  @include will-fall;
+}
