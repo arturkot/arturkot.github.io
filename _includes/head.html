@@ -9,9 +9,18 @@
 
   <script>
     document.documentElement.classList.remove('no-js');
+    {% include js/modernizr.min.js %}
   </script>
 
-  <link rel="stylesheet" href="{{ "/css/style.css" | prepend: site.baseurl }}">
+  <!-- <link rel="stylesheet" href="{{ "/css/style.css" | prepend: site.baseurl }}"> -->
+
+  <style>
+    {% capture include_to_scssify %}
+      {% include css/style.scss %}
+    {% endcapture %}
+    {{ include_to_scssify | scssify }}
+  </style>
+
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
 </head>

@@ -20,6 +20,10 @@ github_username:  jekyll
 # Build settings
 markdown: kramdown
 
+# CSS
+sass:
+  style: compressed
+
 # Plugins
 gems:
  - jekyll-coffeescript

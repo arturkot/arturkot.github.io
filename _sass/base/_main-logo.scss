@@ -1,4 +1,6 @@
 .main-logo {
+  $diameter: 140px;
+
   position: relative;
   text-align: center;
   margin: .5em auto 1em;
@@ -10,13 +12,19 @@
     left: 50%;
     top: 0;
     display: block;
-    width: 140px;
-    height: 140px;
-    margin: 0 0 0 -70px;
-    background: url(../images/logo.png);
+    width: $diameter;
+    height: $diameter;
+    margin: 0 0 0 ($diameter / -2);
+    font: 0/0 a;
+    text-shadow: none;
+    color: transparent;
+  }
 
-    .svg & {
-      background: url(../images/logo.svg);
-    }
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: $diameter;
+    height: $diameter;
   }
 }
