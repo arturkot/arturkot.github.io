@@ -3,7 +3,10 @@
 
 T = THREE
 
-return false unless (new T.WebGLRenderer())
+unless new T.WebGLRenderer()
+  htmlEl = document.getElementsByTagName('html')[0]
+  htmlEl.classList.add 'is-no-webgl'
+  return
 
 #Globals
 mouseXpos = false
@@ -41,12 +44,6 @@ textureBody = new T.MeshPhongMaterial
   shininess: 1
   shading: T.FlatShading
 
-textureHead = new T.MeshPhongMaterial
-  color: 0xCCCCCC
-  map: textureLoader.load '/images/baked-occlusion-face.jpg'
-  shininess: 1
-  shading: T.FlatShading
-
 # Lights
 hemisphereLight = new T.HemisphereLight 0x404040, 0xFEFEFE, 2
 
@@ -59,7 +56,6 @@ scene.add spotLight
 
 # Geometry
 theBody = null
-theHead = null
 
 drawCatBody = (bodyGeo) ->
   bodyGeo.applyMatrix new T.Matrix4().makeTranslation(0, 0, 1)
@@ -69,23 +65,13 @@ drawCatBody = (bodyGeo) ->
   theBody.rotation.set 0, 90 * Math.PI / 180, 0
   scene.add theBody
 
-drawCatHead = (headGeo) ->
-  headGeo.applyMatrix new T.Matrix4().makeTranslation(0, 0, 1)
-  theHead = new T.Mesh headGeo, textureHead
-  theHead.position.set 0, 0, 0
-  theHead.scale.set 140, 140, 140
-  theHead.rotation.set 0, 90 * Math.PI / 180, 0
-  scene.add theHead
-
-JSONLoader.load '/geometry/3dcat-body.js', drawCatBody
-JSONLoader.load '/geometry/3dcat-head.js', drawCatHead
+JSONLoader.load '/geometry/3dcat-body.json', drawCatBody
 
 # Update cat on mouse move
 updateCat = ->
-  if theBody and theHead and mouseXpos isnt false
+  if theBody and mouseXpos isnt false
     angle = 180 * mouseXpos / window.innerWidth
     theBody.rotation.set 0, (angle - 45) * Math.PI/ 180, 0
-    theHead.rotation.set 0, (angle - 45) * Math.PI/ 180, 0
 
 document.addEventListener 'mousemove', (e) ->
   mouseXpos = e.clientX

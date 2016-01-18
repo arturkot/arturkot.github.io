@@ -3,12 +3,15 @@
   height: 422px;
   display: block;
   margin: 0 auto 50px;
-  background: url(../images/square-cat.png);
   @include will-fall;
 
-  @media #{$mqRetina} {
-    background: url(../images/square-cat@x2.png);
-    background-size: 230px 422px;
+  .is-no-webgl {
+    background: url(../images/square-cat.png);
+
+    @media #{$mqRetina} {
+      background: url(../images/square-cat@x2.png);
+      background-size: 230px 422px;
+    }
   }
 
   canvas {
