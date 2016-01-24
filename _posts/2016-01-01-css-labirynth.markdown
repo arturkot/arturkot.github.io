@@ -1,5 +1,5 @@
 ---
 title: CSS Labirynth
-external_url: https://developer.mozilla.org/bn-BD/demos/detail/css-labyrinth/launch
+external_url: http://codepen.io/arturkot/full/obLXBp/
 desc: CSS experiment
 ---
