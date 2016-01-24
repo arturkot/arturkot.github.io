@@ -1,5 +1,5 @@
 ---
 title: Pub
-external_url: http://artur-kot.pl/pub
+external_url: http://arturkot.pl/pub
 desc: interactive animation
 ---

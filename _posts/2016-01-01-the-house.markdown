@@ -1,5 +1,5 @@
 ---
 title: The House
-external_url: http://the-house.arturkot.pl/
+external_url: http://the-house.arturkot.pl
 desc: adventure game
 ---
