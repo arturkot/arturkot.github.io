@@ -5,7 +5,8 @@
 
 BOX_OPEN_DELAY = 300
 THREE_PATH = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.js'
-MODERN_PATH = '/css/style-modern.css'
+MODERN_CSS_PATH = '/css/style-modern.css'
+MODERN_JS_PATH = '/js/cat-3d.js'
 
 enableClosestPolyfill = ->
   closest = (selector) ->
@@ -56,6 +57,13 @@ closeBox = ({boxEl, index, timers, callback} = {}) ->
     callback() if callback
   , BOX_OPEN_DELAY
 
+closeAllBoxes = ({boxEls, excludeIndex, timers} = {}) ->
+  for boxEl, index in boxEls when index isnt excludeIndex
+    closeBox
+      boxEl: boxEl
+      index: index
+      timers: timers
+
 applyMouseEvents = (boxEl, index, timers) ->
   boxEl.addEventListener 'mouseenter', (e) ->
     openBox
@@ -69,12 +77,10 @@ applyMouseEvents = (boxEl, index, timers) ->
       index: index
       timers: timers
 
-applyTouchEvents = (boxEl, index, timers) ->
-  isOpened = no
-
+applyTouchEvents = ({boxEl, boxEls, index, timers} = {}) ->
   boxEl.addEventListener 'click', (e) ->
     return unless window.innerWidth >= 768
-    return if isOpened
+    return if boxEl.classList.contains 'has-opened'
 
     e.preventDefault()
 
@@ -82,25 +88,30 @@ applyTouchEvents = (boxEl, index, timers) ->
       boxEl: boxEl
       index: index
       timers: timers
-      callback: -> isOpened = yes
 
-  document.addEventListener 'click', (e) ->
-    return unless window.innerWidth >= 768
-    return unless isOpened
-    return if e.target.closest '.box'
-
-    closeBox
-      boxEl: boxEl
-      index: index
+    closeAllBoxes
+      boxEls: boxEls
+      excludeIndex: index
       timers: timers
-      callback: -> isOpened = no
 
 applyEvents = ->
   boxEls = document.querySelectorAll '.box-list li'
   timers = {}
 
-  if Modernizr.touchevents
-    applyTouchEvents boxEl, index, timers for boxEl, index in boxEls
+  document.addEventListener 'click', (e) ->
+    return unless window.innerWidth >= 768
+    return if e.target.closest '.box'
+
+    closeAllBoxes
+      boxEls: boxEls
+      timers: timers
+
+  if Modernizr.touchevents then for boxEl, index in boxEls
+    applyTouchEvents
+      boxEl: boxEl
+      boxEls: boxEls
+      index: index
+      timers: timers
   else
     applyMouseEvents boxEl, index, timers for boxEl, index in boxEls
 
@@ -134,8 +145,8 @@ initModern = (axesContainerEl) ->
 
   enableClosestPolyfill()
   applyEvents()
-  insertResource THREE_PATH, -> insertResource '/js/cat-3d.js'
-  insertResource MODERN_PATH, ->
+  insertResource THREE_PATH, -> insertResource MODERN_JS_PATH
+  insertResource MODERN_CSS_PATH, ->
     playIntro()
     adjustAxesHeight axesContainerEl
     window.addEventListener 'resize', -> adjustAxesHeight axesContainerEl

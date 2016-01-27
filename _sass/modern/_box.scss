@@ -1,14 +1,15 @@
-.box, .box:hover {
-  margin: 0 ($box-size / 2);
-  vertical-align: top;
-  background: none transparent;
-}
-
 .box {
+  -webkit-tap-highlight-color: transparent;
   width: $box-size;
   height: $box-size;
   transform: rotateX(54.736deg) rotateZ(-45deg);
   transform-style: preserve-3d;
+
+  &, &:hover {
+    margin: 0 ($box-size / 2);
+    vertical-align: top;
+    background: none transparent;
+  }
 
   &:active {
     background: none;
