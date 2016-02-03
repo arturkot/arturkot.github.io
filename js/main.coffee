@@ -134,8 +134,14 @@ playIntro = ->
 
 adjustAxesHeight = (axesContainerEl) ->
   axesContainerEl.style.height = ''
+
   return unless window.innerWidth >= 768
-  axesContainerEl.style.height = "#{document.documentElement.scrollHeight}px"
+
+  scrollHeight = document.documentElement.scrollHeight
+  windowHeight = window.innerHeight
+  height = if scrollHeight > windowHeight then scrollHeight else windowHeight
+
+  axesContainerEl.style.height = "#{height}px"
 
 initModern = (axesContainerEl) ->
   return unless window.innerWidth >= 768
