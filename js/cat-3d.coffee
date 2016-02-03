@@ -10,6 +10,11 @@ unless new T.WebGLRenderer()
 
 #Globals
 mouseXpos = false
+ANIMATION_SPEED = 4
+isAnimating = no
+startAngle = 0
+currentAngle = 90
+currentAngle = 0
 
 # Basic elements
 $container = document.getElementById 'js-3dcat'
@@ -57,12 +62,14 @@ scene.add spotLight
 # Geometry
 theBody = null
 
+easeOutQuad = (t) -> t * (2 - t)
+
 drawCatBody = (bodyGeo) ->
   bodyGeo.applyMatrix new T.Matrix4().makeTranslation(0, 0, 1)
   theBody = new T.Mesh bodyGeo, textureBody
   theBody.position.set 0, 0, 0
   theBody.scale.set 140, 140, 140
-  theBody.rotation.set 0, 90 * Math.PI / 180, 0
+  theBody.rotation.set 0, currentAngle * Math.PI / 180, 0
   scene.add theBody
 
 JSONLoader.load '/geometry/3dcat-body.json', drawCatBody
@@ -70,8 +77,37 @@ JSONLoader.load '/geometry/3dcat-body.json', drawCatBody
 # Update cat on mouse move
 updateCat = ->
   if theBody and mouseXpos isnt false
-    angle = 180 * mouseXpos / window.innerWidth
-    theBody.rotation.set 0, (angle - 45) * Math.PI/ 180, 0
+    targetAngle = (180 * mouseXpos / window.innerWidth) - 45
+
+    if Modernizr.touchevents
+      return if targetAngle is currentAngle
+
+      startAngle = currentAngle unless isAnimating
+      updateAngle = currentAngle
+
+      if isAnimating
+        updateAngle = startAngle +
+        easeOutQuad(Math.abs(currentAngle - startAngle) /
+        Math.abs(targetAngle - startAngle)) *
+        (targetAngle - startAngle)
+
+      if currentAngle < targetAngle
+        currentAngle += ANIMATION_SPEED
+        isAnimating = yes
+        if targetAngle < currentAngle
+          isAnimating = no
+          currentAngle = targetAngle
+
+      if currentAngle > targetAngle
+        currentAngle -= ANIMATION_SPEED
+        isAnimating = yes
+        if targetAngle > currentAngle
+          isAnimating = no
+          currentAngle = targetAngle
+
+      theBody.rotation.set 0, updateAngle * Math.PI / 180, 0
+    else
+      theBody.rotation.set 0, targetAngle * Math.PI / 180, 0
 
 document.addEventListener 'mousemove', (e) ->
   mouseXpos = e.clientX
