@@ -9,7 +9,10 @@ unless new T.WebGLRenderer()
   return
 
 #Globals
+catCenterXpos = window.innerWidth / 2
+catCenterYpos = 280
 mouseXpos = false
+mouseYpos = false
 ANIMATION_SPEED = 4
 isAnimating = no
 startAngle = 0
@@ -77,7 +80,11 @@ JSONLoader.load '/geometry/3dcat-body.json', drawCatBody
 # Update cat on mouse move
 updateCat = ->
   if theBody and mouseXpos isnt false
-    targetAngle = (180 * mouseXpos / window.innerWidth) - 45
+    mouseYpos = catCenterYpos + 100 if mouseYpos < catCenterYpos + 100
+    atan2 = Math.atan2(catCenterYpos - mouseYpos, catCenterXpos - mouseXpos)
+    targetAngle =  (atan2 * -180 / Math.PI) - 45
+
+    # targetAngle = (180 * mouseXpos / window.innerWidth) - 45
 
     if Modernizr.touchevents
       return if targetAngle is currentAngle
@@ -111,6 +118,10 @@ updateCat = ->
 
 document.addEventListener 'mousemove', (e) ->
   mouseXpos = e.clientX
+  mouseYpos = e.clientY
+
+window.addEventListener 'resize', ->
+  catCenterXpos = window.innerWidth / 2
 
 # Camera
 camera.position.set cameraX + 1, cameraY + 1, cameraZ + 1
