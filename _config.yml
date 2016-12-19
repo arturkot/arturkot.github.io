@@ -11,7 +11,8 @@ email: arturkot85@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Hi! Take a look at some of my personal projects. Enjoy! :)
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://arturkot.pl" # the base hostname & protocol for your site
+url: https://arturkot.pl # the base hostname & protocol for your site
+enforce_ssl: arturkot.pl
 twitter_username: jekyllrb
 github_username:  jekyll
 
