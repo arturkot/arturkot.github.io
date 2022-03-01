@@ -1,0 +1,12 @@
+<ul class="box-list">
+    {% for post in include.posts %}
+    <li class="box-list__item js-fall">
+        {%
+        include box.html
+        external_url=post.external_url
+        title=post.title
+        desc=post.desc
+        %}
+    </li>
+    {% endfor %}
+</ul>
