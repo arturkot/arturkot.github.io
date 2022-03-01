@@ -18,6 +18,7 @@
     {{ include_to_scssify | scssify }}
   </style>
 
+  <link rel="stylesheet" href="css/style-modern.css" media="screen and (min-width: 768px)" />
   <script src="{{ "/js/main.js" | prepend: site.baseurl }}" type="module"></script>
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
