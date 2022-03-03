@@ -35,8 +35,10 @@ function openBox({ boxEl, index, timers, callback } = {}) {
 }
 
 function applyTouchEvents({ boxEls, timers }) {
+  let eventDataArr = [];
+
   boxEls.forEach((boxEl, index) => {
-    boxEl.addEventListener("click", (e) => {
+    const callback = (e) => {
       if (boxEl.classList.contains("has-opened")) return;
 
       e.preventDefault();
@@ -52,28 +54,68 @@ function applyTouchEvents({ boxEls, timers }) {
         excludeIndex: index,
         timers,
       });
+    };
+    const eventName = "click";
+    boxEl.addEventListener(eventName, callback);
+
+    eventDataArr.push({
+      boxEl,
+      eventName,
+      callback,
     });
   });
+
+  return () => {
+    eventDataArr.forEach(({ boxEl, eventName, callback }) => {
+      boxEl.removeEventListener(eventName, callback);
+    });
+  };
 }
 
 function applyMouseEvents({ boxEls, timers }) {
+  let eventDataArr = [];
+
   boxEls.forEach((boxEl, index) => {
-    boxEl.addEventListener("pointerenter", (e) => {
+    const callback = (e) => {
       openBox({
         boxEl,
         index,
         timers,
       });
-    });
+    };
+    const eventName = "pointerenter";
+    boxEl.addEventListener(eventName, callback);
 
-    boxEl.addEventListener("pointerleave", (e) => {
+    eventDataArr.push({
+      boxEl,
+      eventName,
+      callback,
+    });
+  });
+
+  boxEls.forEach((boxEl, index) => {
+    const callback = (e) => {
       closeBox({
         boxEl,
         index,
         timers,
       });
+    };
+    const eventName = "pointerleave";
+    boxEl.addEventListener(eventName, callback);
+
+    eventDataArr.push({
+      boxEl,
+      eventName,
+      callback,
     });
   });
+
+  return () => {
+    eventDataArr.forEach(({ boxEl, eventName, callback }) => {
+      boxEl.removeEventListener(eventName, callback);
+    });
+  };
 }
 
 function applyEvents() {
@@ -81,23 +123,33 @@ function applyEvents() {
   const timers = {};
   const isHoverSupport = matchMedia("(hover: hover").matches;
 
-  document.addEventListener("pointerdown", (e) => {
+  const handlePointerdown = (e) => {
     if (e.target.closest(".box")) return;
 
     closeAllBoxes({
       boxEls: boxEls,
       timers: timers,
     });
-  });
+  };
 
+  document.addEventListener("pointerdown", handlePointerdown);
+
+  let mouseEventCleanup;
+  let touchEventCleanup;
   if (isHoverSupport) {
-    applyMouseEvents({
+    mouseEventCleanup = applyMouseEvents({
       boxEls,
       timers,
     });
   } else {
-    applyTouchEvents({ boxEls, timers });
+    touchEventCleanup = applyTouchEvents({ boxEls, timers });
   }
+
+  return () => {
+    document.removeEventListener("pointerdown", handlePointerdown);
+    if (mouseEventCleanup) mouseEventCleanup();
+    if (touchEventCleanup) touchEventCleanup();
+  };
 }
 
 function adjustAxesHeight(axesContainerEl) {
@@ -132,18 +184,28 @@ function init() {
 
   playIntro();
   adjustAxesHeight(axesContainerEl);
-  applyEvents();
-  window.addEventListener("resize", adjustAxesHeight(axesContainerEl));
+  const cleanEvents = applyEvents();
+
+  const handleResize = () => adjustAxesHeight(axesContainerEl);
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+    cleanEvents();
+  };
 }
 
 const media = matchMedia("screen and (min-width: 768px)");
 
+let cleanup;
 if (media.matches) {
-  init();
+  cleanup = init();
 }
 
 media.addEventListener("change", () => {
-  if (media.matches) init();
+  if (cleanup) cleanup();
+  if (media.matches) cleanup = init();
 });
 
 // ---
