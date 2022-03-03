@@ -1,9 +1,4 @@
 .main-container {
   max-width: 320px;
   margin: 0 auto;
-  display: none;
-
-  .no-js & {
-    display: block;
-  }
 }

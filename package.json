@@ -1,0 +1,12 @@
+{
+  "name": "arturkot.github.io",
+  "private": "true",
+  "version": "1.0.0",
+  "author": "Artur Kot",
+  "devDependencies": {
+    "prettier": "^2.5.1"
+  },
+  "volta": {
+    "node": "17.6.0"
+  }
+}

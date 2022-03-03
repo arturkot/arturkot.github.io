@@ -4,7 +4,7 @@
 @import "variables";
 @import "mixins";
 
-@media screen and (min-width: 768px) {
+html:not(.no-js) {
   @import "modern/main-container";
   @import "modern/axes-container";
   @import "modern/box-list";
