@@ -64,7 +64,7 @@ spotLight.position.set(400, 2000, 40);
 scene.add(hemisphereLight);
 scene.add(spotLight);
 
-const theBody = null;
+let theBody = null;
 const easeOutQuad = (t) => t * (2 - t);
 
 const drawCatBody = (gltf) => {
@@ -121,9 +121,11 @@ const updateCat = () => {
         currentAngle = targetAngle;
       }
     }
-  }
 
-  theBody.rotation.set(0, (targetAngle * Math.PI) / 180, 0);
+    theBody.rotation.set(0, (updateAngle * Math.PI) / 180, 0);
+  } else {
+    theBody.rotation.set(0, (targetAngle * Math.PI) / 180, 0);
+  }
 };
 
 document.addEventListener("mousemove", (e) => {
