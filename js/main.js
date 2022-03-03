@@ -1,9 +1,116 @@
+const BOX_OPEN_DELAY = 300;
 
-function init() {
-    console.log('start!');
+function closeBox({ boxEl, index, timers, callback }) {
+  clearTimeout(timers[`has-opened-${index}`]);
+
+  boxEl.classList.remove("has-opened");
+
+  timers[`open-${index}`] = setTimeout(() => {
+    boxEl.classList.remove("has-opened", "is-open");
+    if (callback) callback();
+  }, [BOX_OPEN_DELAY]);
 }
 
-init()
+function closeAllBoxes({ boxEls, excludeIndex, timers } = {}) {
+  boxEls.forEach((boxEl, index) => {
+    if (index === excludeIndex) return;
+
+    closeBox({
+      boxEl,
+      index,
+      timers,
+    });
+  });
+}
+
+function openBox({ boxEl, index, timers, callback } = {}) {
+  clearTimeout(timers[`open-${index}`]);
+
+  boxEl.classList.add("is-open");
+
+  timers[`has-opened-${index}`] = setTimeout(() => {
+    boxEl.classList.add("has-opened");
+    if (callback) callback();
+  }, BOX_OPEN_DELAY);
+}
+
+function applyEvents() {
+  const boxEls = document.querySelectorAll(".box-list li");
+  const timers = {};
+
+  document.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".box")) return;
+
+    closeAllBoxes({
+      boxEls: boxEls,
+      timers: timers,
+    });
+  });
+
+  boxEls.forEach((boxEl, index) => {
+    boxEl.addEventListener("pointerenter", (e) => {
+      openBox({
+        boxEl,
+        index,
+        timers,
+      });
+    });
+
+    boxEl.addEventListener("pointerleave", (e) => {
+      closeBox({
+        boxEl,
+        index,
+        timers,
+      });
+    });
+  });
+}
+
+function adjustAxesHeight(axesContainerEl) {
+  axesContainerEl.style.height = "";
+
+  const { scrollHeight } = document.documentElement;
+  const height =
+    scrollHeight > window.innerHeight ? scrollHeight : window.innerHeight;
+
+  axesContainerEl.style.height = `${height}px`;
+}
+
+function playIntro() {
+  const fall = (objectEl) => {
+    const delay = 1000 + Math.floor(Math.random() * 500);
+    setTimeout(() => {
+      objectEl.classList.add("has-fallen");
+    }, delay);
+  };
+  const axesEl = document.getElementById("js-axes");
+  const objectsEls = document.querySelectorAll(".js-fall");
+
+  setTimeout(() => {
+    axesEl.classList.add("is-done");
+  }, 100);
+
+  objectsEls.forEach(fall);
+}
+
+function init() {
+  const axesContainerEl = document.getElementById("js-axes-container");
+
+  playIntro();
+  adjustAxesHeight(axesContainerEl);
+  applyEvents();
+  window.addEventListener("resize", adjustAxesHeight(axesContainerEl));
+}
+
+const media = matchMedia("screen and (min-width: 768px)");
+
+if (media.matches) {
+  init();
+}
+
+media.addEventListener("change", () => {
+  if (media.matches) init();
+});
 
 // ---
 // ---
