@@ -163,26 +163,35 @@ function adjustAxesHeight(axesContainerEl) {
 }
 
 function playIntro() {
+  let fallTimers = [];
   const fall = (objectEl) => {
     const delay = 1000 + Math.floor(Math.random() * 500);
-    setTimeout(() => {
+    const fallTimer = setTimeout(() => {
       objectEl.classList.add("has-fallen");
     }, delay);
+    fallTimers.push(fallTimer);
   };
   const axesEl = document.getElementById("js-axes");
   const objectsEls = document.querySelectorAll(".js-fall");
 
-  setTimeout(() => {
+  const doneTimer = setTimeout(() => {
     axesEl.classList.add("is-done");
   }, 100);
 
   objectsEls.forEach(fall);
+
+  return () => {
+    fallTimers.forEach(clearTimeout);
+    clearTimeout(doneTimer);
+    objectsEls.forEach((objectEl) => objectEl.classList.remove("has-fallen"));
+    axesEl.classList.remove("is-done");
+  };
 }
 
 function init() {
   const axesContainerEl = document.getElementById("js-axes-container");
 
-  playIntro();
+  const clearIntro = playIntro();
   adjustAxesHeight(axesContainerEl);
   const cleanEvents = applyEvents();
 
@@ -191,6 +200,7 @@ function init() {
   window.addEventListener("resize", handleResize);
 
   return () => {
+    clearIntro();
     window.removeEventListener("resize", handleResize);
     cleanEvents();
   };
