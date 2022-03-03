@@ -34,19 +34,29 @@ function openBox({ boxEl, index, timers, callback } = {}) {
   }, BOX_OPEN_DELAY);
 }
 
-function applyEvents() {
-  const boxEls = document.querySelectorAll(".box-list li");
-  const timers = {};
+function applyTouchEvents({ boxEls, timers }) {
+  boxEls.forEach((boxEl, index) => {
+    boxEl.addEventListener("click", (e) => {
+      if (boxEl.classList.contains("has-opened")) return;
 
-  document.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".box")) return;
+      e.preventDefault();
 
-    closeAllBoxes({
-      boxEls: boxEls,
-      timers: timers,
+      openBox({
+        boxEl,
+        index,
+        timers,
+      });
+
+      closeAllBoxes({
+        boxEls,
+        excludeIndex: index,
+        timers,
+      });
     });
   });
+}
 
+function applyMouseEvents({ boxEls, timers }) {
   boxEls.forEach((boxEl, index) => {
     boxEl.addEventListener("pointerenter", (e) => {
       openBox({
@@ -64,6 +74,30 @@ function applyEvents() {
       });
     });
   });
+}
+
+function applyEvents() {
+  const boxEls = document.querySelectorAll(".box-list li");
+  const timers = {};
+  const isHoverSupport = matchMedia("(hover: hover").matches;
+
+  document.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".box")) return;
+
+    closeAllBoxes({
+      boxEls: boxEls,
+      timers: timers,
+    });
+  });
+
+  if (isHoverSupport) {
+    applyMouseEvents({
+      boxEls,
+      timers,
+    });
+  } else {
+    applyTouchEvents({ boxEls, timers });
+  }
 }
 
 function adjustAxesHeight(axesContainerEl) {
