@@ -191,6 +191,8 @@ function playIntro() {
 function init() {
   const axesContainerEl = document.getElementById("js-axes-container");
 
+  import("/js/cat-3d.js");
+
   const clearIntro = playIntro();
   adjustAxesHeight(axesContainerEl);
   const clearEvents = applyEvents();
