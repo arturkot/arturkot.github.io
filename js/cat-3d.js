@@ -4,7 +4,6 @@ import {
   WebGLRenderer,
   TextureLoader,
   MeshPhongMaterial,
-  FlatShading,
   SpotLight,
   HemisphereLight,
   Matrix4,
@@ -54,7 +53,7 @@ const textureBody = new MeshPhongMaterial({
   color: 0xcccccc,
   map: textureLoader.load("/images/baked-occlusion-body.jpg"),
   shininess: 1,
-  shading: FlatShading,
+  flatShading: true,
 });
 
 const hemisphereLight = new HemisphereLight(0x404040, 0xfefefe, 2);
@@ -70,8 +69,8 @@ const easeOutQuad = (t) => t * (2 - t);
 
 const drawCatBody = (gltf) => {
   const bodyGeo = gltf.scene.children[0].geometry;
-  bodyGeo.applyMatrix(new Matrix4().makeTranslation(0, 0, 1));
-  const theBody = new Mesh(bodyGeo, textureBody);
+  bodyGeo.applyMatrix4(new Matrix4().makeTranslation(0, 0, 1));
+  theBody = new Mesh(bodyGeo, textureBody);
   theBody.position.set(0, 0, 0);
   theBody.scale.set(140, 140, 140);
   theBody.rotation.set(0, (currentAngle * Math.PI) / 180, 0);
