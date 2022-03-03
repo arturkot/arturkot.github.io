@@ -193,7 +193,7 @@ function init() {
 
   const clearIntro = playIntro();
   adjustAxesHeight(axesContainerEl);
-  const cleanEvents = applyEvents();
+  const clearEvents = applyEvents();
 
   const handleResize = () => adjustAxesHeight(axesContainerEl);
 
@@ -201,8 +201,8 @@ function init() {
 
   return () => {
     clearIntro();
+    clearEvents();
     window.removeEventListener("resize", handleResize);
-    cleanEvents();
   };
 }
 
