@@ -192,7 +192,7 @@ function init() {
   document.documentElement.classList.remove("no-js");
   const axesContainerEl = document.getElementById("js-axes-container");
 
-  import("/js/cat-3d.js");
+  import("https://arturkot.pl/square-cat/index.js");
 
   const clearIntro = playIntro();
   adjustAxesHeight(axesContainerEl);
