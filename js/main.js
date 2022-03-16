@@ -118,6 +118,53 @@ function applyMouseEvents({ boxEls, timers }) {
   };
 }
 
+function applyFocusEvents({ boxEls, timers }) {
+  let eventDataArr = [];
+  const linkEls = Array.from(boxEls).map((el) => [el, el.querySelector("a")]);
+
+  linkEls.forEach(([boxEl, linkEl], index) => {
+    const callback = (e) => {
+      openBox({
+        boxEl,
+        index,
+        timers,
+      });
+    };
+    const eventName = "focus";
+    linkEl.addEventListener(eventName, callback);
+
+    eventDataArr.push({
+      linkEl,
+      eventName,
+      callback,
+    });
+  });
+
+  linkEls.forEach(([boxEl, linkEl], index) => {
+    const callback = (e) => {
+      closeBox({
+        boxEl,
+        index,
+        timers,
+      });
+    };
+    const eventName = "blur";
+    linkEl.addEventListener(eventName, callback);
+
+    eventDataArr.push({
+      linkEl,
+      eventName,
+      callback,
+    });
+  });
+
+  return () => {
+    eventDataArr.forEach(({ linkEl, eventName, callback }) => {
+      linkEl.removeEventListener(eventName, callback);
+    });
+  };
+}
+
 function applyEvents() {
   const boxEls = document.querySelectorAll(".box-list li");
   const timers = {};
@@ -144,11 +191,13 @@ function applyEvents() {
   } else {
     touchEventCleanup = applyTouchEvents({ boxEls, timers });
   }
+  const focusEventCleanup = applyFocusEvents({ boxEls, timers });
 
   return () => {
     document.removeEventListener("pointerdown", handlePointerdown);
     if (mouseEventCleanup) mouseEventCleanup();
     if (touchEventCleanup) touchEventCleanup();
+    focusEventCleanup();
   };
 }
 
@@ -210,13 +259,14 @@ function init() {
 }
 
 const media = matchMedia("screen and (min-width: 768px)");
+const prefersReducedMotion = matchMedia("(prefers-reduced-motion)").matches;
 
 let cleanup;
-if (media.matches) {
+if (media.matches && !prefersReducedMotion) {
   cleanup = init();
 }
 
 media.addEventListener("change", () => {
   if (cleanup) cleanup();
-  if (media.matches) cleanup = init();
+  if (media.matches && !prefersReducedMotion) cleanup = init();
 });

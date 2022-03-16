@@ -11,4 +11,8 @@
   &:active {
     background: var(--cDistinct);
   }
+
+  &:focus-visible {
+    outline: 10px dashed var(--cDistinct);
+  }
 }
