@@ -18,6 +18,10 @@
     font: 0/0 a;
     text-shadow: none;
     color: transparent;
+
+    &:focus-visible {
+      outline: 4px dashed var(--cDistinct);
+    }
   }
 
   svg {
