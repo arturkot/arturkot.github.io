@@ -210,13 +210,14 @@ function init() {
 }
 
 const media = matchMedia("screen and (min-width: 768px)");
+const prefersReducedMotion = matchMedia("(prefers-reduced-motion)").matches;
 
 let cleanup;
-if (media.matches) {
+if (media.matches && !prefersReducedMotion) {
   cleanup = init();
 }
 
 media.addEventListener("change", () => {
   if (cleanup) cleanup();
-  if (media.matches) cleanup = init();
+  if (media.matches && !prefersReducedMotion) cleanup = init();
 });
