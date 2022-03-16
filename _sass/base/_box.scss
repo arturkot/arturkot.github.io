@@ -2,13 +2,13 @@
   display: block;
   padding: 1em;
   text-decoration: none;
-  color: $cLight;
+  color: var(--cInnerText);
 
   &:hover {
-    background: darken($cBlue, 10%);
+    background: var(--cLead-darker-10);
   }
 
   &:active {
-    background: $cPink;
+    background: var(--cDistinct);
   }
 }

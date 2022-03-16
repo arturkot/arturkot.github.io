@@ -10,9 +10,9 @@
 }
 
 .axes-container__x {
-  background: $cPink;
+  background: var(--cDistinct);
 }
 
 .axes-container__y {
-  background: lighten($cBlue, 10%);
+  background: var(--cLeadLight);
 }
