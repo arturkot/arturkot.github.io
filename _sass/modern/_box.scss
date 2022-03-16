@@ -31,21 +31,21 @@
 .box__l {
   width: 100%;
   height: 100%;
-  background: darken($cBlue, 10%);
+  background: var(--cLead-darker-10);
   transform: rotateY(-90deg) translateZ($box-size/ 2);
 }
 
 .box__r {
   width: 100%;
   height: 100%;
-  background: darken($cBlue, 5%);
+  background: var(--cLead-darker-5);
   transform: rotateX(-90deg) translateZ($box-size / 2);
 }
 
 .box__t {
   width: 100%;
   height: 100%;
-  background: $cBlue;
+  background: var(--cLead);
   transform: translateZ($box-size / 2);
   transform-origin: 0 0 0;
   transition-property: transform, background;
@@ -53,21 +53,21 @@
 }
 
 .is-open .box__t {
-  background: darken($cBlue, 5%);
+  background: var(--cLead-darker-5);
   transform: rotateX(90deg) translateY(40px) translateZ(0px);
 }
 
 .box__br {
   width: 100%;
   height: 100%;
-  background: darken($cBlue, 20%);
+  background: var(--cLead-darker-20);
   transform: rotateX(90deg) translateZ($box-size / 2);
 }
 
 .box__bl {
   width: 100%;
   height: 100%;
-  background: darken($cBlue, 15%);
+  background: var(--cLead-darker-15);
   transform: rotateY(90deg) translateZ($box-size/ 2);
 }
 
@@ -77,14 +77,18 @@
   top: ($box-size - $bubble-size) / 2;
   width: $bubble-size;
   height: $bubble-size;
-  color: $cLight;
-  background: $cPink;
+  color: var(--cInnerText);
+  background: var(--cDistinct);
   text-align: center;
   border-radius: 100%;
   transform: rotateX(-90deg) rotateY(-45deg) scaleY(1.2)
     translateY($box-size / 2) scale(0.1);
   transform-origin: 50% 50%;
   transition: transform 0.3s ease-in-out;
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--cText);
+  }
 }
 
 .has-opened .box__bubble {

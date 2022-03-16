@@ -32,7 +32,7 @@
   top: 50%;
   width: 100%;
   height: 1px;
-  background: $cBlue;
+  background: var(--cLead);
   transform: rotate(90deg) scale(200, 1);
 }
 
@@ -41,6 +41,6 @@
   top: 0;
   width: 1px;
   height: 100%;
-  background: $cPink;
+  background: var(--cDistinct);
   transform: rotate(90deg) scale(1, 200);
 }

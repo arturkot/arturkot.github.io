@@ -1,10 +1,10 @@
 .box-list__item {
   text-align: center;
   font-family: "Futura", Arial, sans-serif;
-  background: $cBlue;
+  background: var(--cLead);
 
   & + & {
-    border-top: 1px solid lighten($cBlue, 10%);
+    border-top: 1px solid var(--cLeadLight);
   }
 }
 

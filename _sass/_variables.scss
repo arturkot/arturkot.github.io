@@ -1,12 +1,32 @@
-// Dimensions
 $box-size: 80px;
 $bubble-size: 200px;
-
-// Colours
-$cLight: #fefefe;
-$cGrey: #f1f1f1;
-$cBlue: #8dd2ce;
-$cPink: #ec008c;
-
-// Media Queries
+$cLead: #8dd2ce;
+$cLeadDark: #1e7ad8;
 $mqRetina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+
+:root {
+  --cText: #212121;
+  --cInnerText: #fefefe;
+  --cGrey: #f1f1f1;
+  --cLead: #{$cLead};
+  --cLeadLight: #{lighten($cLead, 10%)};
+  --cLead-darker-5: #{darken($cLead, 5%)};
+  --cLead-darker-10: #{darken($cLead, 10%)};
+  --cLead-darker-15: #{darken($cLead, 15%)};
+  --cLead-darker-20: #{darken($cLead, 20%)};
+  --cDistinct: #ec008c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cInnerText: #fefefe;
+    --cGrey: #1a3548;
+    --cLead: #{$cLeadDark};
+    --cLeadLight: #{lighten($cLeadDark, 10%)};
+    --cLead-darker-5: #{darken($cLeadDark, 5%)};
+    --cLead-darker-10: #{darken($cLeadDark, 10%)};
+    --cLead-darker-15: #{darken($cLeadDark, 15%)};
+    --cLead-darker-20: #{darken($cLeadDark, 20%)};
+    --cDistinct: #fec52e;
+  }
+}
